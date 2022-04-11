@@ -4,7 +4,7 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/sbook
+    url: jdbc:mysql://127.0.0.1:3306/sbook_local
     username: root
     password:
   jpa:

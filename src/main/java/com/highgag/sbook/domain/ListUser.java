@@ -9,14 +9,14 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-public class BookmarkGroup {
+public class ListUser {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bookmark_id")
-    private Bookmark bookmark;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
