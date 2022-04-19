@@ -10,9 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 
 /**
  * login 요청(post) 시 username(email), password 전송하면
@@ -28,12 +34,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        System.out.println("JwtAuthenticationFilter : 로그인 시도 중");
 
         try {
             ObjectMapper om = new ObjectMapper();
             User user = om.readValue(request.getInputStream(), User.class);
-            System.out.println(user.toString());
 
             UsernamePasswordAuthenticationToken authenticationToken
                     = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
@@ -42,14 +46,34 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Authentication authentication =
                     authenticationManager.authenticate(authenticationToken);
 
-            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            System.out.println("principalDetails = " + principalDetails.getUser().getEmail());
-
-            System.out.println("===========================");
             return authentication;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
+    }
+
+    /**
+     * attemptAuthentication  실행 후 인증이 정상적으로 된 경우 아래 함수 실행
+     * JWT 토큰 발급 -> request한 사용자에게 JWT response header에 담아 보내기
+     */
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+
+        User user = principalDetails.getUser();
+
+        String jwtToken = JWT.create()
+                .withSubject(principalDetails.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                .withClaim("id", user.getId())
+                .withClaim("email", user.getEmail())
+                .sign(JwtProperties.SECRET);
+
+        response.addHeader("Authorization", "Bearer " + jwtToken);
     }
 }
