@@ -42,7 +42,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UsernamePasswordAuthenticationToken authenticationToken
                     = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 
-
             Authentication authentication =
                     authenticationManager.authenticate(authenticationToken);
 
@@ -56,7 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     /**
-     * attemptAuthentication  실행 후 인증이 정상적으로 된 경우 아래 함수 실행
+     * attemptAuthentication 실행 후 인증이 정상적으로 된 경우 아래 함수 실행
      * JWT 토큰 발급 -> request한 사용자에게 JWT response header에 담아 보내기
      */
     @Override
@@ -69,10 +68,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken = JWT.create()
                 .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", user.getId())
                 .withClaim("email", user.getEmail())
-                .sign(JwtProperties.SECRET);
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader("Authorization", "Bearer " + jwtToken);
     }

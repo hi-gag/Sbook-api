@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.highgag.sbook.bookmark.domain.Bookmark;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,6 +34,6 @@ public class User {
     public void saveUser(String email, String password){
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
+        this.role = Role.ROLE_USER;
     }
 }

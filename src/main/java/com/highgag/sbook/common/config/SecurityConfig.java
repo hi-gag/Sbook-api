@@ -1,6 +1,8 @@
 package com.highgag.sbook.common.config;
 
 import com.highgag.sbook.common.jwt.JwtAuthenticationFilter;
+import com.highgag.sbook.common.jwt.JwtAuthorizationFilter;
+import com.highgag.sbook.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+    private final UserRepository userRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -25,20 +28,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-//        http.addFilterBefore(new MyFilter1(), BasicAuthenticationFilter.class);
+        JwtAuthenticationFilter authenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        authenticationFilter.setFilterProcessesUrl("/user/login");
 
-        http.addFilter(corsFilter) // 모든 요청은 이 필터를 탄다, @CrossOrigin(인증 X, 시큐리티 필터에 인증
+        http.addFilter(corsFilter)
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 x -> JWT 사용
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 X
                 .and()
 
-                .formLogin().disable() // form tag 만들어서 로그인 안 한다
-                .httpBasic().disable() // http basic 방식 : header에 Authorization 에 Id와 pw를 담아 보냄. -> 우리가 사용하는 건 토큰을 담아 보내는 bearer 방식
+                .formLogin().disable()
+                .httpBasic().disable()
 
-                .addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticaitonManager을 꼭 parameter로 넘겨줘야 함
+                .addFilter(authenticationFilter)
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
-                .access("hasRole(Role.USER)")
+                .access("hasRole('ROLE_USER')")
+                .antMatchers("/bookmarks/**")
+                .access("hasRole('ROLE_USER') ")
+                .antMatchers("/bookmark/**")
+                .access("hasRole('ROLE_USER') ")
                 .anyRequest().permitAll();
     }
 }
