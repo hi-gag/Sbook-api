@@ -1,6 +1,7 @@
 package com.highgag.sbook.user.controller;
 
 import com.highgag.sbook.common.dto.GeneralResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.repository.UserRepository;
@@ -18,24 +19,10 @@ public class UserApiController {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostMapping("join")
+    @PostMapping("user/signup")
     public GeneralResponse join(@Valid @RequestBody User user){
         user.saveUser(user.getEmail(), bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return new GeneralResponse("200", "회원가입 완료");
-    }
-
-    @GetMapping("api/v1/user")
-    public String user(){
-        return "user1";
-    }
-
-    @GetMapping("api/v1/user/1")
-    public String user1(){
-        return "user1";
-    }
-    @GetMapping("api/v1/user/2")
-    public String user2(){
-        return "user1";
     }
 }

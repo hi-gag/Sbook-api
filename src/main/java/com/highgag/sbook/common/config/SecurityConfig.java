@@ -2,6 +2,7 @@ package com.highgag.sbook.common.config;
 
 import com.highgag.sbook.common.jwt.JwtAuthenticationFilter;
 import com.highgag.sbook.common.jwt.JwtAuthorizationFilter;
+import com.highgag.sbook.common.jwt.JwtProperties;
 import com.highgag.sbook.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
     private final UserRepository userRepository;
+    private final JwtProperties jwtProperties;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -40,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .addFilter(authenticationFilter)
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtProperties, userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
                 .access("hasRole('ROLE_USER')")
