@@ -1,4 +1,4 @@
-package com.highgag.sbook.domain;
+package com.highgag.sbook.bookmark.domain;
 
 public enum Importance {
     ONE(1),

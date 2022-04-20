@@ -1,11 +1,9 @@
-package com.highgag.sbook.domain;
+package com.highgag.sbook.bookmarkList.domain;
 
+import com.highgag.sbook.user.domain.User;
 import lombok.Getter;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
