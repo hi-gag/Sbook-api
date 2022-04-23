@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    private String username;
+
+    @NotNull
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @NotNull
     private String password;
 
     private String uuid;
@@ -31,7 +37,8 @@ public class User {
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder
-    public void saveUser(String email, String password){
+    public void saveEntity(String username, String email, String password){
+        this.username = username;
         this.email = email;
         this.password = password;
         this.role = Role.ROLE_USER;

@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
@@ -48,15 +49,21 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
                 .getClaim("id").asLong();
 
         if(email != null) {
-            User user = userRepository.findByEmail(email);
-            PrincipalDetails principalDetails = new PrincipalDetails(user);
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            principalDetails,
-                            null,
-                            principalDetails.getAuthorities());
+            Optional<User> userEntity = userRepository.findByEmail(email);
+            try{
+                User user = userEntity.get();
+                PrincipalDetails principalDetails = new PrincipalDetails(user);
+                Authentication authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                principalDetails,
+                                null,
+                                principalDetails.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (NullPointerException e) {
+
+            }
+
         }
 
         chain.doFilter(request, response);
