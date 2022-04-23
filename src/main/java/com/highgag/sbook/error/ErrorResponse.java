@@ -15,7 +15,7 @@ public class ErrorResponse {
 
     private String message; //예외 메시지 저장
 
-    private int status; // HTTP 상태 값 저장 400, 404, 500 등..
+    private int status; // HTTP 상태 값 저장
 
     //@Valid의 Parameter 검증을 통과하지 못한 필드가 담긴다.
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,10 +45,6 @@ public class ErrorResponse {
         return this;
     }
 
-/*
-getter 생략
-*/
-
     //BindingResult.getFieldErrors() 메소드를 통해 전달받은 fieldErrors
     public void setCustomFieldErrors(List<FieldError> fieldErrors) {
 
@@ -63,7 +59,7 @@ getter 생략
         });
     }
 
-    //parameter 검증에 통과하지 못한 필드가 담긴 클래스이다.
+    //parameter 검증에 통과하지 못한 필드가 담긴 클래스
     public static class CustomFieldError {
 
         private String field;
