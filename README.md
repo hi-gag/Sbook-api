@@ -8,8 +8,8 @@
 
 ### 로컬 디렉토리에 클론
 ```shell
-cd 적당한디렉토리
-git clone https://github.com/hi-gag/Sbook-api
+cd 클론받을 디렉토리
+git clone https://github.com/hi-gag/Sbook-api.git
 ```
 
 #### 자바 11(JDK 11) 이 없는 경우
@@ -28,7 +28,7 @@ cd sbook
 cd build/libs
 java -jar sbook-0.0.1-SNAPSHOT.jar
 ```
-- 혹은 구글 드라이브에서 jar 파일 다운로드 후 
+- 혹은 구글 드라이브에서 jar 파일 다운로드 후 (환경변수 파일 설정 불필요)
 ```shell
 cd 다운받은 디렉토리
 java -jar sbook-0.0.1-SNAPSHOT.jar
