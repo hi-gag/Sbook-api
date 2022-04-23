@@ -2,6 +2,7 @@ package com.highgag.sbook.common.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.highgag.sbook.common.auth.PrincipalDetails;
+import com.highgag.sbook.common.dto.AuthorizationDto;
 import com.highgag.sbook.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * login 요청을 하면 로그인 시도를 위해서 실행 -> email, password 확인 작업
@@ -61,7 +63,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
         User user = principalDetails.getUser();
@@ -73,6 +74,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("email", user.getEmail())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        response.addHeader("Authorization", "Bearer " + jwtToken);
+        AuthorizationDto authorizationDto = new AuthorizationDto(user.getUsername(), "200", "정상적으로 토큰이 발급되었습니다", jwtToken);
+        String jsonResponse = mapper.writeValueAsString(authorizationDto);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(jsonResponse);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }
