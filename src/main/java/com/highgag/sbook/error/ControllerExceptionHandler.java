@@ -1,4 +1,4 @@
-package com.highgag.sbook.common.error;
+package com.highgag.sbook.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.security.InvalidParameterException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -30,6 +28,23 @@ public class ControllerExceptionHandler {
 
     //@Valid 검증 실패 시 Catch
     @ExceptionHandler(InvalidParameterException.class)
+    protected ResponseEntity<ErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
+        logger.error("handleInvalidParameterException", e);
+
+        ErrorCode errorCode = e.getErrorCode();
+
+        ErrorResponse response
+                = ErrorResponse
+                .create()
+                .status(errorCode.getStatus())
+                .message(e.toString())
+                .errors(e.getErrors());
+
+        return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
+
+    //중복된 이메일의 사용자가 존재할 경우
+    @ExceptionHandler(DuplicatedUserException.class)
     protected ResponseEntity<ErrorResponse> handleDuplicatedUserException(DuplicatedUserException e) {
         logger.error("handleDuplicatedUserException", e);
 

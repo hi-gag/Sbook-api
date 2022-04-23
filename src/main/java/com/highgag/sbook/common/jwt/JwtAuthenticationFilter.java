@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("email", user.getEmail())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        AuthorizationDto authorizationDto = new AuthorizationDto("200", "정상적으로 토큰이 발급되었습니다", jwtToken);
+        AuthorizationDto authorizationDto = new AuthorizationDto(user.getUsername(), "200", "정상적으로 토큰이 발급되었습니다", jwtToken);
         String jsonResponse = mapper.writeValueAsString(authorizationDto);
 
         response.setContentType("application/json");

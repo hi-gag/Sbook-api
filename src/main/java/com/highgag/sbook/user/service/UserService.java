@@ -1,14 +1,11 @@
 package com.highgag.sbook.user.service;
 
-import com.highgag.sbook.common.error.DuplicatedUserException;
+import com.highgag.sbook.error.DuplicatedUserException;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

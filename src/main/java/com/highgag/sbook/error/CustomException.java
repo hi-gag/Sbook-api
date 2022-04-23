@@ -1,4 +1,4 @@
-package com.highgag.sbook.common.error;
+package com.highgag.sbook.error;
 
 public class CustomException extends RuntimeException {
 

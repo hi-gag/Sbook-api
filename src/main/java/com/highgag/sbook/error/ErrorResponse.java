@@ -1,4 +1,4 @@
-package com.highgag.sbook.common.error;
+package com.highgag.sbook.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
