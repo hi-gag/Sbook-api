@@ -38,6 +38,3 @@ out/
 
 ### Mac ###
 .DS_Store
-
-# yml
-src/main/resources/config/env.yml
