@@ -1,6 +1,8 @@
-package com.highgag.sbook.domain;
+package com.highgag.sbook.bookmark.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.highgag.sbook.bookmarkList.domain.BookmarkList;
+import com.highgag.sbook.user.domain.User;
 import lombok.Getter;
 
 import javax.persistence.*;

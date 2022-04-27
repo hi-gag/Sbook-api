@@ -1,6 +1,7 @@
-package com.highgag.sbook.domain;
+package com.highgag.sbook.bookmarkList.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.highgag.sbook.bookmark.domain.Bookmark;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -9,14 +10,14 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-public class ListUser {
+public class BookmarkGroup {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "bookmark_id")
+    private Bookmark bookmark;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
