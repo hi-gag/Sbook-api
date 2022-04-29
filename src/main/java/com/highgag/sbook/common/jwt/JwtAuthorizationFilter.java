@@ -45,6 +45,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
                 .replace(JwtProperties.TOKEN_PREFIX, "");
         String email = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
                 .getClaim("email").asString();
+        String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+                .getClaim("username").asString();
         Long id = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
                 .getClaim("id").asLong();
 

@@ -1,5 +1,6 @@
 package com.highgag.sbook.error;
 
+import com.highgag.sbook.common.dto.GeneralResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,13 +51,9 @@ public class ControllerExceptionHandler {
 
         ErrorCode errorCode = e.getErrorCode();
 
-        ErrorResponse response
-                = ErrorResponse
-                .create()
-                .status(errorCode.getStatus())
-                .message(e.toString());
-
-        return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("409", "중복된 회원이 존재합니다");
+        return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 
     //CustomException을 상속받은 클래스가 예외를 발생 시킬 시, Catch하여 ErrorResponse를 반환
@@ -80,12 +77,9 @@ public class ControllerExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         logger.error("handleException", e);
 
-        ErrorResponse response
-                = ErrorResponse
-                .create()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(e.toString());
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("500", "INTERNAL SERVER ERROR");
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
