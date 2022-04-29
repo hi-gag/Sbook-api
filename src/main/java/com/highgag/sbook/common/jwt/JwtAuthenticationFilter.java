@@ -3,6 +3,7 @@ package com.highgag.sbook.common.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.highgag.sbook.common.auth.PrincipalDetails;
 import com.highgag.sbook.common.dto.AuthorizationDto;
+import com.highgag.sbook.common.dto.GeneralResponse;
 import com.highgag.sbook.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     /**
      * attemptAuthentication 실행 후 인증이 정상적으로 된 경우 아래 함수 실행
-     * JWT 토큰 발급 -> request한 사용자에게 JWT response header에 담아 보내기
+     * JWT 토큰 발급 -> request한 사용자에게 JWT response body에 담아 보내기
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
@@ -71,11 +72,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", user.getId())
+                .withClaim("username", user.getUsername())
                 .withClaim("email", user.getEmail())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-
-        AuthorizationDto authorizationDto = new AuthorizationDto(user.getUsername(), "200", "정상적으로 토큰이 발급되었습니다", jwtToken);
-        String jsonResponse = mapper.writeValueAsString(authorizationDto);
+        GeneralResponse<Object> generalResponse = new GeneralResponse<>();
+        AuthorizationDto authorizationDto = new AuthorizationDto(user.getUsername(), jwtToken);
+        String jsonResponse = mapper.writeValueAsString(generalResponse.setData("200", "정상적으로 토큰이 발급되었습니다", authorizationDto));
 
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
@@ -84,6 +86,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        GeneralResponse<Object> generalResponse = new GeneralResponse<>();
+        String jsonResponse = mapper.writeValueAsString(generalResponse.setData("401", "Unauthorized", failed.getMessage()));
+
+        response.setStatus(401);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(jsonResponse);
     }
 }
