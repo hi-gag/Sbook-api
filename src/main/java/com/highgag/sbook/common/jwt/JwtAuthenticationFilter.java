@@ -86,9 +86,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-//        super.unsuccessfulAuthentication(request, response, failed);
         GeneralResponse<Object> generalResponse = new GeneralResponse<>();
         String jsonResponse = mapper.writeValueAsString(generalResponse.setData("401", "Unauthorized", failed.getMessage()));
+
         response.setStatus(401);
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
