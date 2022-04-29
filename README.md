@@ -4,6 +4,7 @@
 - Spring boot 2.6.6
 - MySQL 8.0
 - Spring data jpa 2.6.6
+- Jenkins 2.332.2
 
 
 ### 로컬 디렉토리에 클론

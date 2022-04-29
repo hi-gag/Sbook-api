@@ -1,14 +1,24 @@
 package com.highgag.sbook.common.dto;
 
-import lombok.Getter;
+public class GeneralResponse<T> {
+    public String code;
+    public String message;
+    private T data;
 
-@Getter
-public class GeneralResponse {
-    String code;
-    String msg;
+    public T getData() {
+        return data;
+    }
 
-    public GeneralResponse(String code, String msg) {
+    public Object setData(String code, String msg) {
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
+        return this;
+    }
+
+    public Object setData(String code, String msg, T data) {
+        this.code = code;
+        this.message = msg;
+        this.data = data;
+        return this;
     }
 }
