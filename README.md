@@ -25,9 +25,9 @@ git clone https://github.com/hi-gag/Sbook-api.git
 - 로컬 버전 실행을 좀 더 쉽게 바꾼 후 리드미 업데이트 하겠습니다!
 ```shell
 cd sbook
-./gradlew build
+./gradlew build -x test
 cd build/libs
-java -jar sbook-0.0.1-SNAPSHOT.jar
+java -jar -Djasypt.encryptor.password=[암호] sbook-0.0.2-SNAPSHOT.jar
 ```
 - 혹은 구글 드라이브에서 jar 파일 다운로드 후 (환경변수 파일 설정 불필요)
 ```shell
@@ -39,3 +39,5 @@ java -jar sbook-0.0.1-SNAPSHOT.jar
 ```shell
 http://localhost:8080
 ```
+
+#### 혹은 배포된 서버 이용하시기를 추천드립니다!
