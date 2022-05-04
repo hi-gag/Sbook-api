@@ -6,7 +6,6 @@
 - Spring data jpa 2.6.6
 - Jenkins 2.332.2
 
-
 ### 로컬 디렉토리에 클론
 ```shell
 cd 클론받을 디렉토리
