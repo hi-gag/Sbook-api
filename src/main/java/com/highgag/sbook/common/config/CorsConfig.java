@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig implements WebMvcConfigurer {
 
     @Bean
     public CorsFilter corsFilter(){
@@ -19,5 +21,10 @@ public class CorsConfig {
         config.addAllowedMethod("*"); // 모든 method(post, get, put, delete, patch) 요청을 허용하겠다
         source.registerCorsConfiguration("/api/**", config);
         return new CorsFilter(source);
+    }
+
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*");
     }
 }
