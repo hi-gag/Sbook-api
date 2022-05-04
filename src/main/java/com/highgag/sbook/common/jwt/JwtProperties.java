@@ -6,10 +6,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtProperties {
 
-    static String SECRET;
+    private static JwtProperties jwtProperties = new JwtProperties();
+    private static String SECRET;
     static int EXPIRATION_TIME = 864000000; // 10일 (1/1000초)
     static String TOKEN_PREFIX = "Bearer ";
     static String HEADER_STRING = "Authorization";
+
+    public static JwtProperties getInstance(){
+        return jwtProperties;
+    }
 
     public static String getSECRET() {
         return SECRET;
