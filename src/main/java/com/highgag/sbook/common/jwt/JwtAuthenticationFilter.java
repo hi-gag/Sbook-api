@@ -30,6 +30,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private ObjectMapper mapper = new ObjectMapper();
+    JwtProperties jwtProperties = JwtProperties.getInstance();
 
     /**
      * login 요청을 하면 로그인 시도를 위해서 실행 -> email, password 확인 작업
@@ -70,11 +71,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken = JWT.create()
                 .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ jwtProperties.EXPIRATION_TIME))
                 .withClaim("id", user.getId())
                 .withClaim("username", user.getUsername())
                 .withClaim("email", user.getEmail())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+                .sign(Algorithm.HMAC512(jwtProperties.getSECRET()));
         GeneralResponse<Object> generalResponse = new GeneralResponse<>();
         AuthorizationDto authorizationDto = new AuthorizationDto(user.getUsername(), jwtToken);
         String jsonResponse = mapper.writeValueAsString(generalResponse.setData("200", "정상적으로 토큰이 발급되었습니다", authorizationDto));
