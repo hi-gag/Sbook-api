@@ -24,8 +24,8 @@ import java.util.Optional;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final JwtProperties jwtProperties;
     private UserRepository userRepository;
+    JwtProperties jwtProperties = JwtProperties.getInstance();
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtProperties jwtProperties, UserRepository userRepository) {
         super(authenticationManager);
@@ -36,18 +36,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String header = request.getHeader(JwtProperties.HEADER_STRING);
-        if(header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        String header = request.getHeader(jwtProperties.HEADER_STRING);
+        if(header == null || !header.startsWith(jwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
-        String token = request.getHeader(JwtProperties.HEADER_STRING)
+        String token = request.getHeader(jwtProperties.HEADER_STRING)
                 .replace(JwtProperties.TOKEN_PREFIX, "");
-        String email = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+        String email = JWT.require(Algorithm.HMAC512(jwtProperties.getSECRET())).build().verify(token)
                 .getClaim("email").asString();
-        String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+        String username = JWT.require(Algorithm.HMAC512(jwtProperties.getSECRET())).build().verify(token)
                 .getClaim("username").asString();
-        Long id = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+        Long id = JWT.require(Algorithm.HMAC512(jwtProperties.getSECRET())).build().verify(token)
                 .getClaim("id").asLong();
 
         if(email != null) {
