@@ -20,8 +20,6 @@ git clone https://github.com/hi-gag/Sbook-api.git
 ```
 
 #### 자바 11(JDK 11) 이 이미 있는 경우 혹은 설치 후
-- 먼저 팀 노션 내 칸반보드 > 백엔드 > 환경변수 파일 확인 후 그대로 따라 해주세요
-- 로컬 버전 실행을 좀 더 쉽게 바꾼 후 리드미 업데이트 하겠습니다!
 ```shell
 cd sbook
 ./gradlew build -x test
