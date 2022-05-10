@@ -9,6 +9,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -44,6 +46,16 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e){
+        logger.error("handleNoSuchElementException", e);
+
+        ErrorCode errorCode = ErrorCode.NOT_FOUND;
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("404", errorCode.getMessage());
+        return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
+
     //중복된 이메일의 사용자가 존재할 경우
     @ExceptionHandler(DuplicatedUserException.class)
     protected ResponseEntity<ErrorResponse> handleDuplicatedUserException(DuplicatedUserException e) {
@@ -53,6 +65,16 @@ public class ControllerExceptionHandler {
 
         GeneralResponse<Object> response = new GeneralResponse<>();
         response.setData("409", "중복된 회원이 존재합니다");
+        return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    protected ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e){
+        logger.error("forbidden exception", e);
+
+        ErrorCode errorCode = e.getErrorCode();
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("403", "권한이 없습니다");
         return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 

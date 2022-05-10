@@ -2,10 +2,13 @@ package com.highgag.sbook.user.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.highgag.sbook.bookmark.domain.Bookmark;
+import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.common.dto.AuthorizationDto;
 import com.highgag.sbook.common.jwt.JwtProperties;
 import com.highgag.sbook.common.jwt.JwtTokenProvider;
 import com.highgag.sbook.error.DuplicatedUserException;
+import com.highgag.sbook.error.ForbiddenException;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +33,22 @@ public class UserService {
         return token;
     }
 
-    private void validateDuplicateMember(User user){
+    public void validateDuplicateMember(User user){
         Optional<User> findMember = userRepository.findByEmail(user.getEmail());
         if (findMember.isPresent()){
             throw new DuplicatedUserException();
+        }
+    }
+
+    public void isAuthorized(User user, Bookmark bookmark){
+        if (bookmark.getUser() != user){
+            throw new ForbiddenException();
+        }
+    }
+
+    public void isAuthorized(User user, BookmarkList bookmarkList){
+        if (bookmarkList.getOwner() != user || !bookmarkList.is_shared()){
+            throw new ForbiddenException();
         }
     }
 }
