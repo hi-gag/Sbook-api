@@ -19,3 +19,8 @@ jasypt:
     bean: jasyptStringEncryptor
 server:
   port: 8081
+  tomcat:
+    ajp:
+      protocol : AJP/1.3
+      port: 8001
+      enabled: true
