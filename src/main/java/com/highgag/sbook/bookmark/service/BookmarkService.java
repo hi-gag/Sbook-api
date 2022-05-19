@@ -22,7 +22,14 @@ public class BookmarkService {
 
     public Bookmark findOne(User user, Long id){
         Optional<Bookmark> bookmark = bookmarkRepository.findById(id);
+        if (!bookmark.isPresent()) return null;
         userService.isAuthorized(user, bookmark.get());
+        return bookmark.get();
+    }
+
+    public Bookmark findOne(Long id){
+        Optional<Bookmark> bookmark = bookmarkRepository.findById(id);
+        if (!bookmark.isPresent()) return null;
         return bookmark.get();
     }
 }
