@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.user.domain.User;
 import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 
@@ -19,19 +23,24 @@ public class Bookmark {
 
     private String title;
 
-    private String intro;
+    private String description;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
+    @Setter
     private User user;
 
     private String url;
 
     private String image;
 
-    private LocalDateTime created_at;
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updated_at;
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     private String memo;
 
@@ -42,5 +51,4 @@ public class Bookmark {
 
     @Enumerated(EnumType.STRING)
     private Importance importance; //ONE, TWO, THREE, FOUR, FIVE
-
 }

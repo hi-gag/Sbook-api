@@ -68,6 +68,16 @@ public class ControllerExceptionHandler {
         return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    protected ResponseEntity<ErrorResponse> handleUnauthorizedException(ForbiddenException e){
+        logger.error("unauthorized exception", e);
+
+        ErrorCode errorCode = e.getErrorCode();
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("401", "자격 인증데이터가 제공되지 않았거나 유효하지 않습니다");
+        return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
+
     @ExceptionHandler(ForbiddenException.class)
     protected ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e){
         logger.error("forbidden exception", e);
