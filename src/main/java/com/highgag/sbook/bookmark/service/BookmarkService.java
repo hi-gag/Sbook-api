@@ -2,7 +2,6 @@ package com.highgag.sbook.bookmark.service;
 
 import com.highgag.sbook.bookmark.domain.Bookmark;
 import com.highgag.sbook.bookmark.repository.BookmarkRepository;
-import com.highgag.sbook.error.ForbiddenException;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,8 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
 
-    public void save(Bookmark bookmark){
+    public void save(Bookmark bookmark, User user){
+        bookmark.setUser(user);
         bookmarkRepository.save(bookmark);
     }
 
