@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -30,7 +31,7 @@ public class ControllerExceptionHandler {
     }
 
     //@Valid 검증 실패 시 Catch
-    @ExceptionHandler(InvalidParameterException.class)
+    @ExceptionHandler({InvalidParameterException.class, MethodArgumentNotValidException.class})
     protected ResponseEntity<ErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
         logger.error("handleInvalidParameterException", e);
 

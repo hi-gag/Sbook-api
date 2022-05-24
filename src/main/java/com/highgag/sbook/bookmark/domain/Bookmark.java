@@ -10,13 +10,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
+@Getter @Setter
 public class Bookmark {
     @Id
     private Long id;
@@ -27,9 +28,10 @@ public class Bookmark {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    @Setter
+    @NotNull
     private User user;
 
+    @NotNull
     private String url;
 
     private String image;
@@ -50,5 +52,6 @@ public class Bookmark {
     private BookmarkList bookmarkList;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Importance importance; //ONE, TWO, THREE, FOUR, FIVE
 }
