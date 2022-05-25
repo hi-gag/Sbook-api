@@ -63,11 +63,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (NullPointerException e) {
-
             }
-
         }
-
         chain.doFilter(request, response);
     }
 

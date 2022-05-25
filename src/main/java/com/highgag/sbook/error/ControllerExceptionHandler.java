@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -30,7 +31,7 @@ public class ControllerExceptionHandler {
     }
 
     //@Valid 검증 실패 시 Catch
-    @ExceptionHandler(InvalidParameterException.class)
+    @ExceptionHandler({InvalidParameterException.class, MethodArgumentNotValidException.class})
     protected ResponseEntity<ErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
         logger.error("handleInvalidParameterException", e);
 
@@ -65,6 +66,16 @@ public class ControllerExceptionHandler {
 
         GeneralResponse<Object> response = new GeneralResponse<>();
         response.setData("409", "중복된 회원이 존재합니다");
+        return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    protected ResponseEntity<ErrorResponse> handleUnauthorizedException(ForbiddenException e){
+        logger.error("unauthorized exception", e);
+
+        ErrorCode errorCode = e.getErrorCode();
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        response.setData("401", "자격 인증데이터가 제공되지 않았거나 유효하지 않습니다");
         return new ResponseEntity(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 
