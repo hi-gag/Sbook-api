@@ -34,6 +34,23 @@ public class BookmarkController {
         return  response;
     }
 
+    @PutMapping(value = "bookmark/{bookmarkId}", produces = "application/json;charset=UTF-8")
+    public GeneralResponse putBookmark (@PathVariable("bookmarkId") Long bookmarkId, @AuthenticationPrincipal User user, @Valid @RequestBody BookmarkRequest request){
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        bookmarkService.put(bookmarkId, request);
+        response.setData("200", "정상적으로 수정되었습니다.");
+        return response;
+    }
+
+    @DeleteMapping(value = "bookmark/{bookmarkId}", produces = "application/json;charset=UTF-8")
+    public GeneralResponse deleteBookmark (@PathVariable("bookmarkId") Long bookmarkId, @AuthenticationPrincipal User user){
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        Bookmark bookmark = bookmarkService.findOne(user, bookmarkId);
+        bookmarkService.deleteOne(bookmark);
+        response.setData("204", "정상적으로 삭제되었습니다.");
+        return response;
+    }
+
 
 
 }

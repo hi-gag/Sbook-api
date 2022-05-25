@@ -3,7 +3,6 @@ package com.highgag.sbook.common.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.highgag.sbook.common.auth.PrincipalDetails;
-import com.highgag.sbook.error.UnauthorizedException;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.repository.UserRepository;
 import org.slf4j.Logger;
@@ -36,10 +35,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws IOException, ServletException, UnauthorizedException {
+            throws IOException, ServletException {
         String header = request.getHeader(jwtProperties.HEADER_STRING);
-        if(header == null || !header.startsWith(jwtProperties.TOKEN_PREFIX)){
-            throw new UnauthorizedException();
+        if(header == null || !header.startsWith(jwtProperties.TOKEN_PREFIX)) {
+            chain.doFilter(request, response);
+            return;
         }
         String token = request.getHeader(jwtProperties.HEADER_STRING)
                 .replace(JwtProperties.TOKEN_PREFIX, "");
@@ -63,11 +63,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (NullPointerException e) {
-
             }
-
         }
-
         chain.doFilter(request, response);
     }
 
