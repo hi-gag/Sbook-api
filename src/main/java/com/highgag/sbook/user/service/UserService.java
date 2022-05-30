@@ -41,13 +41,13 @@ public class UserService {
     }
 
     public void isAuthorized(User user, Bookmark bookmark){
-        if (bookmark.getUser() != user){
+        if (bookmark.getUser().getEmail().equals(user.getEmail()) == false){
             throw new ForbiddenException();
         }
     }
 
     public void isAuthorized(User user, BookmarkList bookmarkList){
-        if (bookmarkList.getOwner() != user || !bookmarkList.is_shared()){
+        if (bookmarkList.getOwner().getEmail().equals(user.getEmail()) == false  || !bookmarkList.is_shared()){
             throw new ForbiddenException();
         }
     }
