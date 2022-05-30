@@ -1,14 +1,13 @@
 package com.highgag.sbook.bookmark.service;
 
 import com.highgag.sbook.bookmark.domain.Bookmark;
+import com.highgag.sbook.bookmark.dto.BookmarkRequest;
 import com.highgag.sbook.bookmark.repository.BookmarkRepository;
 import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class BookmarkService {
         bookmarkRepository.flush();
     }
 
-    public void put(Long id, Bookmark bookmark){
+    public void put(Long id, BookmarkRequest bookmark){
         Bookmark toBeUpdated = bookmarkRepository.findById(id).get();
 
         toBeUpdated.setTitle(bookmark.getTitle());
@@ -50,6 +49,6 @@ public class BookmarkService {
     public void deleteOne(Bookmark bookmark){
         List<Bookmark> bookmarkList = new ArrayList<>();
         bookmarkList.add(bookmark);
-        bookmarkRepository.deleteInBatch(bookmarkList);
+        bookmarkRepository.deleteAllInBatch(bookmarkList);
     }
 }

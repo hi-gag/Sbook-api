@@ -45,4 +45,9 @@ public class User {
         this.password = password;
         this.role = Role.ROLE_USER;
     }
+
+    public boolean equals(User user){
+        System.out.println(this.getEmail().equals(user.getEmail()));
+        return this.getEmail().equals(user.getEmail());
+    }
 }
