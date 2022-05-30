@@ -1,5 +1,6 @@
 package com.highgag.sbook.common.config;
 
+import com.highgag.sbook.common.filter.CorsFilter;
 import com.highgag.sbook.common.jwt.JwtAuthenticationFilter;
 import com.highgag.sbook.common.jwt.JwtAuthorizationFilter;
 import com.highgag.sbook.common.jwt.JwtProperties;
@@ -14,7 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.filter.CorsFilter;
+
 
 import java.util.List;
 
@@ -35,16 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         JwtAuthenticationFilter authenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-        http.cors().configurationSource(request -> {
-            var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("*"));
-            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
-            cors.setAllowedHeaders(List.of("*"));
-            return cors;
-        });
         authenticationFilter.setFilterProcessesUrl("/user/login");
 
-        http.addFilter(corsFilter)
+        http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 X
                 .and()
