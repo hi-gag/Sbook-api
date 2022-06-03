@@ -21,7 +21,7 @@ public class BookmarkResponse {
     private String memo;
     private int importance;
 
-    private BookmarkResponse(Bookmark bookmark){
+    public BookmarkResponse(Bookmark bookmark){
         this.id = bookmark.getId();
         this.title = bookmark.getTitle();
         this.intro = bookmark.getIntro();

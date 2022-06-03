@@ -2,6 +2,7 @@ package com.highgag.sbook.bookmark.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.highgag.sbook.bookmark.dto.BookmarkRequest;
+import com.highgag.sbook.bookmarkList.domain.BookmarkGroup;
 import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.user.domain.User;
 import lombok.Getter;
@@ -12,6 +13,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -47,10 +50,13 @@ public class Bookmark {
 
     private String memo;
 
-    @JsonIgnore
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bookmarkList_id")
-    private BookmarkList bookmarkList;
+//    @JsonIgnore
+//    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "bookmarkList_id")
+//    private BookmarkList bookmarkList;
+//
+//    @OneToMany(mappedBy = "bookmark", cascade = CascadeType.ALL)
+//    private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @NotNull
