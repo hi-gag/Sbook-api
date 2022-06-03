@@ -9,6 +9,8 @@ import com.highgag.sbook.common.auth.PrincipalDetails;
 import com.highgag.sbook.common.dto.GeneralResponse;
 import com.highgag.sbook.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +21,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
+    private final HttpStatus CREATED = HttpStatus.CREATED;
 
     @GetMapping(value = "bookmark/{bookmarkId}", produces = "application/json;charset=UTF-8")
     public GeneralResponse<BookmarkResponse> getBookmark (@PathVariable("bookmarkId") Long bookmarkId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -34,13 +36,13 @@ public class BookmarkController {
     }
 
     @PostMapping(value = "bookmark", produces = "application/json;charset=UTF-8")
-    public GeneralResponse postBookmark (@Valid @RequestBody BookmarkRequest request, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ResponseEntity postBookmark (@Valid @RequestBody BookmarkRequest request, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         GeneralResponse<Object> response = new GeneralResponse<>();
         Bookmark bookmark = new Bookmark(request, user);
         bookmarkService.save(bookmark, user);
         response.setData("201", "정상적으로 저장되었습니다");
-        return  response;
+        return new ResponseEntity(response, CREATED);
     }
 
     @PutMapping(value = "bookmark/{bookmarkId}", produces = "application/json;charset=UTF-8")
@@ -57,7 +59,7 @@ public class BookmarkController {
         GeneralResponse<Object> response = new GeneralResponse<>();
         Bookmark bookmark = bookmarkService.findOne(user, bookmarkId);
         bookmarkService.deleteOne(bookmark);
-        response.setData("204", "정상적으로 삭제되었습니다.");
+        response.setData("200", "정상적으로 삭제되었습니다.");
         return response;
     }
 }
