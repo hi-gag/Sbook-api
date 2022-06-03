@@ -1,6 +1,7 @@
 package com.highgag.sbook.bookmarkList.service;
 
 import com.highgag.sbook.bookmark.domain.Bookmark;
+import com.highgag.sbook.bookmark.dto.BookmarkResponse;
 import com.highgag.sbook.bookmark.service.BookmarkService;
 import com.highgag.sbook.bookmarkList.domain.BookmarkGroup;
 import com.highgag.sbook.bookmarkList.domain.BookmarkList;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,11 +29,8 @@ public class BookmarkListService {
     private final BookmarkService bookmarkService;
 
     public List<BookmarkListResponse> findAllByUser(User user) {
-        List<BookmarkList> allByUser = bookmarkListRepository.findAllByOwner(user);
-        List<BookmarkListResponse> response = new ArrayList<BookmarkListResponse>();
-        for (BookmarkList bmList : allByUser){
-            response.add(new BookmarkListResponse(bmList));
-        }
+        List<BookmarkListResponse> response = bookmarkListRepository.findAllByOwner(user)
+                .stream().map(BookmarkListResponse::new).collect(Collectors.toList());
         return response;
     }
 
