@@ -55,8 +55,6 @@ public class BookmarkService {
     }
 
     public void deleteOne(Bookmark bookmark){
-        List<Bookmark> bookmarkList = new ArrayList<>();
-        bookmarkList.add(bookmark);
-        bookmarkRepository.deleteAllInBatch(bookmarkList);
+        bookmarkRepository.delete(bookmark);
     }
 }

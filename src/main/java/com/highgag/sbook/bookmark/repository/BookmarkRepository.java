@@ -14,4 +14,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     Optional<Bookmark> findById(Long id);
 
     Bookmark save(Bookmark bookmark);
+
+    @Override
+    void delete(Bookmark entity);
 }

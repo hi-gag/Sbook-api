@@ -55,8 +55,8 @@ public class Bookmark {
 //    @JoinColumn(name = "bookmarkList_id")
 //    private BookmarkList bookmarkList;
 //
-//    @OneToMany(mappedBy = "bookmark", cascade = CascadeType.ALL)
-//    private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
+    @OneToMany(mappedBy = "bookmark", cascade = CascadeType.REMOVE)
+    private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @NotNull

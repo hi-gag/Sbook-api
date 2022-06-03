@@ -1,6 +1,7 @@
 package com.highgag.sbook.bookmarkList.repository;
 
 import com.highgag.sbook.bookmark.domain.Bookmark;
+import com.highgag.sbook.bookmarkList.domain.BookmarkGroup;
 import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,8 @@ public interface BookmarkListRepository extends JpaRepository<BookmarkList, Long
     List<BookmarkList> findAllByOwner(User user);
 
     BookmarkList save(BookmarkList bookmarkList);
+
+    void save(BookmarkGroup bookmarkGroup);
 
     @Query("SELECT bmg.bookmark FROM BookmarkGroup bmg JOIN bmg.bookmarkList bml WHERE bml.id  = :id ")
     List<Bookmark> findAllByBookmarkList (@Param("id") Long id);

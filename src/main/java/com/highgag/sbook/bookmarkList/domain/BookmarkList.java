@@ -1,8 +1,10 @@
 package com.highgag.sbook.bookmarkList.domain;
 
 import com.highgag.sbook.bookmark.domain.Bookmark;
+import com.highgag.sbook.bookmarkList.dto.BookmarkListRequest;
 import com.highgag.sbook.user.domain.User;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -12,7 +14,7 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
+@Getter @Setter
 public class BookmarkList {
     @Id
     private Long id;
@@ -24,4 +26,14 @@ public class BookmarkList {
     private boolean is_shared;
 
     private String title;
+
+    public BookmarkList(BookmarkListRequest request, User user){
+        this.id = request.getId();
+        this.owner = user;
+        this.is_shared = request.isShared();
+        this.title = request.getTitle();
+    }
+
+    public BookmarkList() {
+    }
 }
