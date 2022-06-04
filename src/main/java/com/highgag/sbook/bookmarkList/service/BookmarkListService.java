@@ -10,6 +10,7 @@ import com.highgag.sbook.bookmarkList.dto.BookmarkListResponse;
 import com.highgag.sbook.bookmarkList.repository.BookmarkListRepository;
 import com.highgag.sbook.error.ForbiddenException;
 import com.highgag.sbook.user.domain.User;
+import com.highgag.sbook.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class BookmarkListService {
 
     private final BookmarkListRepository bookmarkListRepository;
     private final BookmarkService bookmarkService;
+    private final UserService userService;
 
     public List<BookmarkListResponse> findAllByUser(User user) {
         List<BookmarkListResponse> response = bookmarkListRepository.findAllByOwner(user)
@@ -38,7 +40,7 @@ public class BookmarkListService {
         Optional<BookmarkList> list =  bookmarkListRepository.findById(id);
         if (list.isPresent()){
             BookmarkList bm =  list.get();
-            if (bm.is_shared() == true || bm.getOwner().getEmail().equals(user.getEmail())){
+            if (bm.is_shared() == true || userService.isAuthorized(user, bm)){
                 return bm;
             }
             else {
@@ -60,8 +62,8 @@ public class BookmarkListService {
         bookmarkListRepository.save(bookmarkGroup);
     }
 
-    public void put(BookmarkListRequest request, User user){
-        BookmarkList toBeUpdated = findById(request.getId(), user);
+    public void put(Long bookmarkListId, BookmarkListRequest request, User user){
+        BookmarkList toBeUpdated = findById(bookmarkListId, user);
         toBeUpdated.setTitle(request.getTitle());
         toBeUpdated.set_shared(request.isShared());
         bookmarkListRepository.save(toBeUpdated);

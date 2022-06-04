@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.highgag.sbook.bookmark.domain.Bookmark;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,8 +31,7 @@ public class User {
     @NotNull
     private String password;
 
-    private String uuid;
-
+    @CreationTimestamp
     private LocalDateTime created_at;
 
     @JsonIgnore
