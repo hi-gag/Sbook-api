@@ -53,6 +53,8 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", cascade = CascadeType.REMOVE)
     private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
 
+    private String keywords;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Importance importance; //ONE, TWO, THREE, FOUR, FIVE
@@ -67,6 +69,7 @@ public class Bookmark {
         this.image = request.getImage();
         this.memo = request.getMemo();
         this.importance = request.getImportance();
+        this.keywords = String.join(",", request.getKeywords());
     }
 
     public Bookmark() {

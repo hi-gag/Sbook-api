@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class BookmarkResponse {
     private String description;
     private String url;
     private String image;
+    private List<String> keywords;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String memo;
@@ -32,6 +36,7 @@ public class BookmarkResponse {
         this.updatedAt = bookmark.getUpdatedAt();
         this.memo = bookmark.getMemo();
         this.importance = bookmark.getImportance().ordinal();
+        this.keywords = Arrays.asList(bookmark.getKeywords().split(","));
     }
 
     public static BookmarkResponse from(Bookmark bookmark) {
