@@ -46,9 +46,10 @@ public class UserService {
         }
     }
 
-    public void isAuthorized(User user, BookmarkList bookmarkList){
+    public boolean isAuthorized(User user, BookmarkList bookmarkList){
         if (bookmarkList.getOwner().getEmail().equals(user.getEmail()) == false  || !bookmarkList.is_shared()){
             throw new ForbiddenException();
         }
+        return true;
     }
 }

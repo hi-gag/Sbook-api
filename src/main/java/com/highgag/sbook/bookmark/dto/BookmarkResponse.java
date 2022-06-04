@@ -36,7 +36,9 @@ public class BookmarkResponse {
         this.updatedAt = bookmark.getUpdatedAt();
         this.memo = bookmark.getMemo();
         this.importance = bookmark.getImportance().ordinal();
+        if (bookmark.getKeywords() != null) {
         this.keywords = Arrays.asList(bookmark.getKeywords().split(","));
+        }
     }
 
     public static BookmarkResponse from(Bookmark bookmark) {

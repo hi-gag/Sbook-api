@@ -52,7 +52,8 @@ public class BookmarkService {
         bookmarkRepository.save(toBeUpdated);
     }
 
-    public void deleteOne(Bookmark bookmark){
+    public void deleteOne(Long bookmarkId, User user){
+        Bookmark bookmark = findOne(user, bookmarkId);
         bookmarkRepository.delete(bookmark);
     }
 }
