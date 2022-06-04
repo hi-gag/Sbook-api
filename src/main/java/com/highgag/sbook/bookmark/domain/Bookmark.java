@@ -50,13 +50,10 @@ public class Bookmark {
 
     private String memo;
 
-//    @JsonIgnore
-//    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "bookmarkList_id")
-//    private BookmarkList bookmarkList;
-//
     @OneToMany(mappedBy = "bookmark", cascade = CascadeType.REMOVE)
     private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
+
+    private String keywords;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -72,6 +69,7 @@ public class Bookmark {
         this.image = request.getImage();
         this.memo = request.getMemo();
         this.importance = request.getImportance();
+        this.keywords = String.join(",", request.getKeywords());
     }
 
     public Bookmark() {

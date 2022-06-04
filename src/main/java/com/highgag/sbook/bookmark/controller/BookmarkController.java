@@ -57,8 +57,7 @@ public class BookmarkController {
     public GeneralResponse deleteBookmark (@PathVariable("bookmarkId") Long bookmarkId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
         GeneralResponse<Object> response = new GeneralResponse<>();
-        Bookmark bookmark = bookmarkService.findOne(user, bookmarkId);
-        bookmarkService.deleteOne(bookmark);
+        bookmarkService.deleteOne(bookmarkId, user);
         response.setData("200", "정상적으로 삭제되었습니다.");
         return response;
     }

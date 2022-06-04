@@ -82,7 +82,7 @@ public class BookmarkListController {
     public GeneralResponse putBookmarkList (@PathVariable("bookmarkListId") Long bookmarkListId, @AuthenticationPrincipal PrincipalDetails principalDetails, @Valid @RequestBody BookmarkListRequest request) {
         User user = principalDetails.getUser();
         GeneralResponse<Object> response = new GeneralResponse<>();
-        bookmarkListService.put(request, user);
+        bookmarkListService.put(bookmarkListId, request, user);
         response.setData("200", "정상적으로 수정되었습니다.");
         return response;
     }

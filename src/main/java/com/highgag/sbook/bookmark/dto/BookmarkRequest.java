@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Data
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ public class BookmarkRequest {
     private String url;
 
     private String image;
+
+    private ArrayList<String> keywords;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

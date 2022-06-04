@@ -9,8 +9,6 @@ import com.highgag.sbook.user.domain.User;
 import com.highgag.sbook.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,7 +52,8 @@ public class BookmarkService {
         bookmarkRepository.save(toBeUpdated);
     }
 
-    public void deleteOne(Bookmark bookmark){
+    public void deleteOne(Long bookmarkId, User user){
+        Bookmark bookmark = findOne(user, bookmarkId);
         bookmarkRepository.delete(bookmark);
     }
 }

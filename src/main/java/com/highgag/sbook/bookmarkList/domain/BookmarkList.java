@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter @Setter
 public class BookmarkList {
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -28,7 +28,6 @@ public class BookmarkList {
     private String title;
 
     public BookmarkList(BookmarkListRequest request, User user){
-        this.id = request.getId();
         this.owner = user;
         this.is_shared = request.isShared();
         this.title = request.getTitle();
