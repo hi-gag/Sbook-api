@@ -69,7 +69,9 @@ public class Bookmark {
         this.image = request.getImage();
         this.memo = request.getMemo();
         this.importance = request.getImportance();
-        this.keywords = String.join(",", request.getKeywords());
+        if (request.getKeywords() != null) {
+            this.keywords = String.join(",", request.getKeywords());
+        }
     }
 
     public Bookmark() {
