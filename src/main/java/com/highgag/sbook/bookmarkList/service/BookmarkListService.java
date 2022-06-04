@@ -60,8 +60,8 @@ public class BookmarkListService {
         bookmarkListRepository.save(bookmarkGroup);
     }
 
-    public void put(BookmarkListRequest request, User user){
-        BookmarkList toBeUpdated = findById(request.getId(), user);
+    public void put(Long bookmarkListId, BookmarkListRequest request, User user){
+        BookmarkList toBeUpdated = findById(bookmarkListId, user);
         toBeUpdated.setTitle(request.getTitle());
         toBeUpdated.set_shared(request.isShared());
         bookmarkListRepository.save(toBeUpdated);

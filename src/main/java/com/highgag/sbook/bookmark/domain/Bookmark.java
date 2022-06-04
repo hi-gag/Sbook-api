@@ -50,11 +50,6 @@ public class Bookmark {
 
     private String memo;
 
-//    @JsonIgnore
-//    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "bookmarkList_id")
-//    private BookmarkList bookmarkList;
-//
     @OneToMany(mappedBy = "bookmark", cascade = CascadeType.REMOVE)
     private List<BookmarkGroup> bookmarkGroupList = new ArrayList<>();
 

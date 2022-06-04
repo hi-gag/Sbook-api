@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Data
 public class BookmarkListRequest {
-    private Long id;
 
     private String title;
 
