@@ -15,9 +15,6 @@ import java.util.ArrayList;
 @Data
 @RequiredArgsConstructor
 public class BookmarkRequest {
-    @Id
-    private Long id;
-
     private String title;
 
     private String intro;
@@ -43,7 +40,4 @@ public class BookmarkRequest {
     @NotNull
     private Importance importance;
 
-    BookmarkRequest (Bookmark bookmark){
-
-    }
 }

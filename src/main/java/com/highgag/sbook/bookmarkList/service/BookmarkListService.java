@@ -7,6 +7,7 @@ import com.highgag.sbook.bookmarkList.domain.BookmarkGroup;
 import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.bookmarkList.dto.BookmarkListRequest;
 import com.highgag.sbook.bookmarkList.dto.BookmarkListResponse;
+import com.highgag.sbook.bookmarkList.repository.BookmarkGroupRepository;
 import com.highgag.sbook.bookmarkList.repository.BookmarkListRepository;
 import com.highgag.sbook.error.ForbiddenException;
 import com.highgag.sbook.user.domain.User;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class BookmarkListService {
 
     private final BookmarkListRepository bookmarkListRepository;
+    private final BookmarkGroupRepository bookmarkGroupRepository;
     private final BookmarkService bookmarkService;
     private final UserService userService;
 
@@ -79,5 +81,11 @@ public class BookmarkListService {
     public void delete(Long bookmarkListId, User user){
         BookmarkList bookmarkList = findById(bookmarkListId, user);
         bookmarkListRepository.delete(bookmarkList);
+    }
+
+    public void deleteFromBookmarkList(Long bookmarkListId, Long bookmarkId, User user){
+        BookmarkList bookmarkList = findById(bookmarkListId, user);
+        Bookmark bookmark = bookmarkService.findWithoutAuthorization(bookmarkId);
+        bookmarkGroupRepository.deleteByBookmarkListAndBookmark(bookmarkList, bookmark);
     }
 }

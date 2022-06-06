@@ -31,6 +31,11 @@ public class BookmarkService {
         return bookmark.get();
     }
 
+    public Bookmark findWithoutAuthorization(Long id){
+        Optional<Bookmark> bookmark = bookmarkRepository.findById(id);
+        return bookmark.get();
+    }
+
     public List<BookmarkResponse> findAllByBookmarkList (Long id) {
         List<BookmarkResponse> bookmarks = bookmarkListRepository.findAllByBookmarkList(id).stream().map(BookmarkResponse::new).collect(Collectors.toList());
         return bookmarks;
