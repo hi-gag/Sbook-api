@@ -3,7 +3,6 @@ package com.highgag.sbook.bookmarkList.controller;
 import com.highgag.sbook.bookmark.domain.Bookmark;
 import com.highgag.sbook.bookmark.dto.BookmarkRequest;
 import com.highgag.sbook.bookmark.service.BookmarkService;
-import com.highgag.sbook.bookmarkList.domain.BookmarkList;
 import com.highgag.sbook.bookmarkList.dto.BookmarkGroupResponse;
 import com.highgag.sbook.bookmarkList.dto.BookmarkListRequest;
 import com.highgag.sbook.bookmarkList.dto.BookmarkListResponse;
@@ -102,6 +101,15 @@ public class BookmarkListController {
         User user = principalDetails.getUser();
         GeneralResponse<Object> response = new GeneralResponse<>();
         bookmarkListService.delete(bookmarkListId, user);
+        response.setData("200", "정상적으로 삭제되었습니다.");
+        return response;
+    }
+
+    @DeleteMapping(value = "bookmarks/{bookmarkListId}/bookmark/{bookmarkId}", produces = "application/json;charset=UTF-8")
+    public GeneralResponse deleteBookmarkFromBookmarkList(@PathVariable("bookmarkListId") Long bookmarkListId, @PathVariable("bookmarkId") Long bookmarkId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+        GeneralResponse<Object> response = new GeneralResponse<>();
+        bookmarkListService.deleteFromBookmarkList(bookmarkListId, bookmarkId, user);
         response.setData("200", "정상적으로 삭제되었습니다.");
         return response;
     }
