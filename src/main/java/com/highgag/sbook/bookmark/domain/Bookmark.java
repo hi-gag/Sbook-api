@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter @Setter
 public class Bookmark {
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     private String title;
@@ -60,7 +60,6 @@ public class Bookmark {
     private Importance importance; //ONE, TWO, THREE, FOUR, FIVE
 
     public Bookmark(BookmarkRequest request, User user){
-        this.id = request.getId();
         this.title = request.getTitle();
         this.intro = request.getIntro();
         this.description = request.getDescription();
