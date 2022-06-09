@@ -5,6 +5,7 @@ import com.highgag.sbook.user.domain.User;
 
 public class BookmarkGroupResponse<T> {
     public Long id;
+    public String title;
     public String owner;
     public boolean isShared;
     private T bookmarks;
@@ -16,6 +17,7 @@ public class BookmarkGroupResponse<T> {
     public BookmarkGroupResponse setBookmarks(BookmarkList bookmarkList, T bookmarks) {
         this.id = bookmarkList.getId();
         this.owner = bookmarkList.getOwner().getUsername();
+        this.title = bookmarkList.getTitle();
         this.isShared = bookmarkList.is_shared();
         this.bookmarks = bookmarks;
         return this;
